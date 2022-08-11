@@ -21,7 +21,7 @@ import errorHandler from './middleware/error-handler.js';
 app.use(express.json());
 
 // Dummy testing route
-app.get('/', (req, res) => {
+    app.get('/', (req, res) => {
     //throw new Error('error');
     res.send('Wellcome')
 })

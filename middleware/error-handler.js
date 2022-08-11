@@ -1,6 +1,6 @@
 const errorHandler = (err, req, res, next) => {
-    console.log(err);
-    res.status(500).json({msg: 'There was an error'});
+    //console.log(err);
+    res.status(500).json({msg: err});
 };
 
 export default errorHandler;
