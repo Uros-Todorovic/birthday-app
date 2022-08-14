@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const UserPaymentSchema = new Schema({
   userId: {
-    type: Number,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   amount: {
     type: Number,

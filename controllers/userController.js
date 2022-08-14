@@ -36,7 +36,7 @@ const listOfAllUsers = async (req, res, next) => {
   const todaysDay = Number(todaysDate[1]);
   const todaysMonth = Number(todaysDate[0]);
   try {
-    const users = await User.find().populate({ path: "wishLIst" });
+    const users = await User.find();
     let usersWithFutureBirthday = [];
     for (const user of users) {
       let dayOfBirthday = Number(
