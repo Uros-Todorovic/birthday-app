@@ -1,4 +1,3 @@
-import { response } from "express";
 import BirthdayEvent from "../models/BirthdayEvent.js";
 import User from "../models/User.js";
 import UserPayment from "../models/UserPayment.js";
