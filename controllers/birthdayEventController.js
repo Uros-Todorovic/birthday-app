@@ -51,7 +51,7 @@ const addParticipantToBirthdayEvent = async (req, res, next) => {
 const returnAllBirthdayEventsExceptOwn = async (req, res, next) => {
   try {
     const birthdayEvents = await BirthdayEvent.find({
-      birthdayPerson: { $ne: "62f537ae97a1bff699d8360b" },
+      birthdayPerson: { $ne: req.body.userId },
     }).populate("birthdayPerson");
 
     if (req.body.openEvent === "true") {

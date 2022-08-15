@@ -4,10 +4,8 @@ const Schema = mongoose.Schema;
 
 const PresentSchema = new Schema({
   birthdayEventId: {
-    type: {
-      type: Schema.Types.ObjectId,
-      ref: "Item",
-    },
+    type: Schema.Types.ObjectId,
+    ref: "BirthdayEvent",
   },
   participants: {
     type: [
@@ -19,11 +17,9 @@ const PresentSchema = new Schema({
       },
     ],
   },
-  amount: {
-    type: Number,
-  },
-  message: {
-    type: String,
+  presentBought: {
+    type: Schema.Types.ObjectId,
+    ref: "Item",
   },
 });
 

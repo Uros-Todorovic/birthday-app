@@ -12,6 +12,7 @@ import connectDB from "./db/connect.js";
 import userRouter from "./routes/userRoutes.js";
 import itemRouter from "./routes/itemRoutes.js";
 import birthdayEventRouter from "./routes/birthdayEventRoutes.js";
+import presentRouter from "./routes/presentRoutes.js";
 
 // Middlewares
 import notFoundMiddleware from "./middleware/not-found.js";
@@ -30,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/item", itemRouter);
 app.use("/api/v1/birthdayEvent", birthdayEventRouter);
+app.use("/api/v1/present", presentRouter);
 
 // If non of routes match, use not-found middleware for any http method
 app.use(notFoundMiddleware);

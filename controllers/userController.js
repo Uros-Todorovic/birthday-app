@@ -30,7 +30,7 @@ const addItemToWishList = async (req, res, next) => {
   }
 };
 
-// Controller for fetching list of all users to see upcoming birthdays.
+// Controller for fetching list of all users to see upcoming birthdays. This list will contain all the users whose birth date is set in the future.
 const listOfAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();

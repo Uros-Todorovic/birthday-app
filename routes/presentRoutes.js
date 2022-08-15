@@ -5,4 +5,6 @@ const router = express.Router();
 // Presents controllers
 import { buyPresentFromWishlist } from "../controllers/presentController.js";
 
-router.route("/buyPresentFromWishlist").post(buyPresentFromWishlist);
+router.route("/buyPresentFromWishlist/:itemId").post(buyPresentFromWishlist);
+
+export default router;
