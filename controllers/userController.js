@@ -32,22 +32,13 @@ const addItemToWishList = async (req, res, next) => {
 
 // Controller for fetching list of all users to see upcoming birthdays.
 const listOfAllUsers = async (req, res, next) => {
-  let todaysDate = new Date().toLocaleDateString().split("/");
-  const todaysDay = Number(todaysDate[1]);
-  const todaysMonth = Number(todaysDate[0]);
   try {
     const users = await User.find();
     let usersWithFutureBirthday = [];
     for (const user of users) {
-      let dayOfBirthday = Number(
-        user.birthDate.toLocaleDateString().split("/")[1]
-      );
-      let monthOfBirthday = Number(
-        user.birthDate.toLocaleDateString().split("/")[0]
-      );
-      if (dayOfBirthday > todaysDay && monthOfBirthday >= todaysMonth) {
+      new Date(user.birthDate).getDate() > new Date().getDate() &&
+        new Date(user.birthDate).getMonth() + 1 >= new Date().getMonth() + 1 &&
         usersWithFutureBirthday.push(user);
-      }
     }
     res.status(200).send(usersWithFutureBirthday);
   } catch (error) {
