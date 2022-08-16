@@ -1,18 +1,18 @@
-import BirthdayEvent from "../models/BirthdayEvent.js";
-import User from "../models/User.js";
-import UserPayment from "../models/UserPayment.js";
+// Models
+import { User, BirthdayEvent, UserPayment } from "../models/index.js";
 
-/**
- *
- * Async functions because of communication with database
- *
- **/
+// Custom errors
+import { BadRequestError } from "../errors/index.js";
 
 // Controller for adding new birthday event
 const addNewBirthdayEvent = async (req, res, next) => {
+  const { id } = req.body;
   try {
+    if (!id) {
+      throw new BadRequestError("Please provide id for user");
+    }
     const eventCreatorId = req.params.userCreatorId;
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(id);
     const birthdayPersonId = user._id.toHexString();
     const birthdayEvent = await BirthdayEvent.create({
       birthdayPerson: birthdayPersonId,
@@ -30,8 +30,12 @@ const addNewBirthdayEvent = async (req, res, next) => {
 // Controller for updating the birthday event when participant is added
 
 const addParticipantToBirthdayEvent = async (req, res, next) => {
+  const { id } = req.body;
   try {
-    const participant = await UserPayment.findOne({ userId: req.body.id });
+    if (!id) {
+      throw new BadRequestError("Please provide id for user");
+    }
+    const participant = await UserPayment.findOne({ userId: id });
     const birthdayEvent = await BirthdayEvent.findByIdAndUpdate(
       { _id: req.params.id },
       {
@@ -41,6 +45,7 @@ const addParticipantToBirthdayEvent = async (req, res, next) => {
     );
     res.status(200).send(birthdayEvent);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -48,9 +53,13 @@ const addParticipantToBirthdayEvent = async (req, res, next) => {
 // Controllers for returning all the birthdays except it's own. List can be filtered by open and all birthdays
 
 const returnAllBirthdayEventsExceptOwn = async (req, res, next) => {
+  const { userId } = req.body;
   try {
+    if (!userId) {
+      throw new BadRequestError("Please provide id for user");
+    }
     const birthdayEvents = await BirthdayEvent.find({
-      birthdayPerson: { $ne: req.body.userId },
+      birthdayPerson: { $ne: userId },
     }).populate("birthdayPerson");
 
     if (req.body.openEvent === "true") {

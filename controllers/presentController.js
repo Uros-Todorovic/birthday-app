@@ -1,19 +1,20 @@
-import BirthdayEvent from "../models/BirthdayEvent.js";
-import Item from "../models/Item.js";
-import Present from "../models/Present.js";
-import User from "../models/User.js";
-/**
- *
- * Async functions because of communication with database
- *
- **/
+// Models
+import { BirthdayEvent, Present } from "../models/index.js";
+
+// Custom errors
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 // User can buy a present by selecting an item from wishlist
 const buyPresentFromWishlist = async (req, res, next) => {
+  const { birthdayEventId } = req.body;
   try {
+    if (!birthdayEventId) {
+      throw new BadRequestError("Please provide birthday event id");
+    }
     const birthdayEvent = await BirthdayEvent.findById(
-      req.body.birthdayEventId
+      birthdayEventId
     ).populate("birthdayPerson");
+
     if (
       birthdayEvent.birthdayPerson.wishlist.filter(
         (item) => item.toString() === req.params.itemId
@@ -25,11 +26,10 @@ const buyPresentFromWishlist = async (req, res, next) => {
       });
       return res.status(200).send(present);
     } else {
-      return res.status(200).send("item not in wishlist");
+      throw new NotFoundError("Item is not in wishlist");
     }
   } catch (error) {
     next(error);
-    console.log(error);
   }
 };
 

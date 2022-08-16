@@ -1,14 +1,16 @@
-import Item from "../models/Item.js";
+// Models
+import { Item } from "../models/index.js";
 
-/**
- *
- * Async functions because of communication with database
- *
- **/
+// Custom errors
+import { BadRequestError } from "../errors/index.js";
 
 // Controller for adding Item that will be used in the user wishlist or as a present item
 const addItem = async (req, res, next) => {
+  const { name, urlLink } = req.body;
   try {
+    if (!name || !urlLink) {
+      throw new BadRequestError("Please provide all values");
+    }
     const item = await Item.create(req.body);
     res.status(200).send(item);
   } catch (error) {

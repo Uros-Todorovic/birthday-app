@@ -11,6 +11,6 @@ import {
 
 router.route("/register").post(register);
 router.route("/addItemToWishList").post(addItemToWishList);
-router.route("/listOfAllUsers").get(listOfAllUsers);
+router.route("/listOfAllUsers/:id").get(listOfAllUsers);
 
 export default router;
