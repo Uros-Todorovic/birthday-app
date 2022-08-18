@@ -38,14 +38,23 @@ const addItemToWishList = async (req, res, next) => {
 // Controller for fetching list of all users to see upcoming birthdays. This list will contain all the users whose birth date is set in the future.
 const listOfAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find({ _id: { $ne: req.params.id } });
-    let usersWithFutureBirthday = [];
-    for (const user of users) {
-      new Date(user.birthDate).getDate() > new Date().getDate() &&
-        new Date(user.birthDate).getMonth() + 1 >= new Date().getMonth() + 1 &&
-        usersWithFutureBirthday.push(user);
-    }
-    res.status(200).send(usersWithFutureBirthday);
+    const users = await User.find({
+      _id: { $ne: req.params.id },
+      $and: [
+        {
+          $expr: {
+            $gte: [{ $month: "$birthDate" }, new Date().getMonth() + 1],
+          },
+        },
+        {
+          $expr: {
+            $gt: [{ $dayOfMonth: "$birthDate" }, new Date().getDate()],
+          },
+        },
+      ],
+    });
+
+    res.status(200).send(users);
   } catch (error) {
     next(error);
   }
