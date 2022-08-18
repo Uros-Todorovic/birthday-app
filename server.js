@@ -9,10 +9,12 @@ dotenv.config();
 import connectDB from "./db/connect.js";
 
 // Routers
-import userRouter from "./routes/userRoutes.js";
-import itemRouter from "./routes/itemRoutes.js";
-import birthdayEventRouter from "./routes/birthdayEventRoutes.js";
-import presentRouter from "./routes/presentRoutes.js";
+import {
+  userRouter,
+  itemRouter,
+  birthdayEventRouter,
+  presentRouter,
+} from "./routes/index.js";
 
 // Middlewares
 import notFoundMiddleware from "./middleware/not-found.js";
