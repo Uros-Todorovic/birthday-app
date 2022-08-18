@@ -37,6 +37,8 @@ const addItemToWishList = async (req, res, next) => {
 
 // Controller for fetching list of all users to see upcoming birthdays. This list will contain all the users whose birth date is set in the future.
 const listOfAllUsers = async (req, res, next) => {
+  const page = req.body.page || 1;
+  const itemsPerPage = 1;
   try {
     const users = await User.find({
       _id: { $ne: req.params.id },
@@ -52,7 +54,9 @@ const listOfAllUsers = async (req, res, next) => {
           },
         },
       ],
-    });
+    })
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage);
 
     res.status(200).send(users);
   } catch (error) {
