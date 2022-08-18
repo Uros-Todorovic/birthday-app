@@ -17,8 +17,8 @@ import {
 } from "./routes/index.js";
 
 // Middlewares
-import notFoundMiddleware from "./middleware/not-found.js";
-import errorHandler from "./middleware/error-handler.js";
+
+import { notFoundMiddleware, errorHandler } from "./middleware/index.js";
 
 // Middleware that only parses JSON and only looks at the requests where the content-type header matches the type option
 app.use(express.json());
