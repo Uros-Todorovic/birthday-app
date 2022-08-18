@@ -41,7 +41,8 @@ const addParticipantToBirthdayEvent = async (req, res, next) => {
       {
         $push: { participants: { userPaymentId: participant._id } },
         $inc: { totalMoneyAmount: participant.amount },
-      }
+      },
+      { new: true }
     );
     res.status(200).send(birthdayEvent);
   } catch (error) {
