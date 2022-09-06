@@ -6,22 +6,24 @@ import { BadRequestError } from "../errors/index.js";
 
 // Controller for adding new birthday event
 const addNewBirthdayEvent = async (req, res, next) => {
-  const { id } = req.body;
+  const { creatorId, bpersonId } = req.body;
   try {
-    if (!id) {
-      throw new BadRequestError("Please provide id for user");
+    if (!creatorId) {
+      throw new BadRequestError("Please provide id for event creator");
     }
-    const eventCreatorId = req.params.userCreatorId;
-    const user = await User.findById(id);
+    const user = await User.findById(bpersonId).populate("wishlist");
     const birthdayPersonId = user._id.toHexString();
     const birthdayEvent = await BirthdayEvent.create({
       birthdayPerson: birthdayPersonId,
       participants: [],
       totalMoneyAmount: 0,
-      eventCreator: eventCreatorId,
+      eventCreator: creatorId,
       notes: "",
     });
-    res.status(200).send(birthdayEvent);
+    res.status(200).json({
+      user,
+      birthdayEvent,
+    });
   } catch (error) {
     next(error);
   }
@@ -30,16 +32,19 @@ const addNewBirthdayEvent = async (req, res, next) => {
 // Controller for updating the birthday event when participant is added
 
 const addParticipantToBirthdayEvent = async (req, res, next) => {
-  const { id } = req.body;
+  const { paymentID, birthdayEventId } = req.body;
   try {
-    if (!id) {
+    if (!paymentID) {
       throw new BadRequestError("Please provide id for user");
     }
-    const participant = await UserPayment.findOne({ userId: id });
+    const participant = await UserPayment.findById(paymentID);
     const birthdayEvent = await BirthdayEvent.findByIdAndUpdate(
-      { _id: req.params.id },
+      { _id: birthdayEventId },
       {
-        $push: { participants: { userPaymentId: participant._id } },
+        $push: {
+          participants: { userPaymentId: participant._id },
+          notes: participant.message,
+        },
         $inc: { totalMoneyAmount: participant.amount },
       },
       { new: true }
@@ -61,7 +66,10 @@ const returnAllBirthdayEventsExceptOwn = async (req, res, next) => {
     }
     const birthdayEvents = await BirthdayEvent.find({
       birthdayPerson: { $ne: userId },
-    }).populate("birthdayPerson");
+    })
+      .populate("birthdayPerson")
+      .populate("eventCreator")
+      .populate("participants.userPaymentId");
 
     if (req.body.openEvent === "true") {
       let openEvents = [];

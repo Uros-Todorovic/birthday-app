@@ -7,10 +7,14 @@ import {
   register,
   addItemToWishList,
   listOfAllUsers,
+  singleUser,
+  singleUserbyID,
 } from "../controllers/userController.js";
 
+router.route("/:name").get(singleUser);
+router.route("/byId/:id").get(singleUserbyID);
 router.route("/register").post(register);
-router.route("/addItemToWishList").post(addItemToWishList);
-router.route("/listOfAllUsers/:id").get(listOfAllUsers);
+router.route("/addItemToWishList/:name").post(addItemToWishList);
+router.route("/listOfAllUsers/:name?/:page?").get(listOfAllUsers);
 
 export default router;

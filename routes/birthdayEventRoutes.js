@@ -9,8 +9,8 @@ import {
   returnAllBirthdayEventsExceptOwn,
 } from "../controllers/birthdayEventController.js";
 
-router.route("/newBirthdayEvent/:userCreatorId").post(addNewBirthdayEvent);
-router.route("/addParticipant/:id").post(addParticipantToBirthdayEvent);
+router.route("/newBirthdayEvent").post(addNewBirthdayEvent);
+router.route("/addParticipant").post(addParticipantToBirthdayEvent);
 router.route("/all").post(returnAllBirthdayEventsExceptOwn);
 
 export default router;

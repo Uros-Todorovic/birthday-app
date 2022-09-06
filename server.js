@@ -14,6 +14,7 @@ import {
   itemRouter,
   birthdayEventRouter,
   presentRouter,
+  userPaymentRouter,
 } from "./routes/index.js";
 
 // Middlewares
@@ -24,9 +25,9 @@ import { notFoundMiddleware, errorHandler } from "./middleware/index.js";
 app.use(express.json());
 
 // Dummy testing route
-app.get("/", (req, res) => {
+app.get("/api/v1", (req, res) => {
   //throw new Error('error');
-  res.send("Wellcome");
+  res.json({ message: "Wellcome from API" });
 });
 
 // Mounting routes
@@ -34,6 +35,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/item", itemRouter);
 app.use("/api/v1/birthdayEvent", birthdayEventRouter);
 app.use("/api/v1/present", presentRouter);
+app.use("/api/v1/userPayment", userPaymentRouter);
 
 // If non of routes match, use not-found middleware for any http method
 app.use(notFoundMiddleware);

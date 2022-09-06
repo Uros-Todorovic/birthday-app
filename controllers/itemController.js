@@ -12,7 +12,7 @@ const addItem = async (req, res, next) => {
       throw new BadRequestError("Please provide all values");
     }
     const item = await Item.create(req.body);
-    res.status(200).send(item);
+    res.status(200).json(item);
   } catch (error) {
     next(error);
   }

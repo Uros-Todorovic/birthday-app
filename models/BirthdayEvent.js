@@ -25,7 +25,7 @@ const BirthdayEventSchema = new Schema({
     type: Number,
   },
   notes: {
-    type: String,
+    type: [],
   },
 });
 
